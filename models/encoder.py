@@ -94,28 +94,15 @@ class EncoderCNN(nn.Module):
             for param in self.cnn.parameters():
                 param.requires_grad = False
 
-    def forward(self, images):
-        """
-        Forward pass.
-        
-        Args:
-            images (Tensor): Input images of shape (batch_size, 3, H, W)
-        
-        Returns:
-            Tensor: Image embeddings of shape (batch_size, embed_size)
-        """
-        features = self.cnn(images)
-        embeddings = self.project(features)
-        return embeddings
-
-
-        
         # TO DO: Initialize and configure the CNN backbone based on model_name
 
         # 1. Create the CNN model using torchvision.models with pretrained weights if specified ✅
         # 2. Store the feature dimension size (before the final classifier) ✅
         # 3. Remove the classifier/fully-connected layer and replace with nn.Identity() ✅
         #------------------------------------------------------------------------------------------------
+
+
+      
     
     def forward(self, images):
         """
@@ -129,7 +116,7 @@ class EncoderCNN(nn.Module):
         """
         # Extract features from CNN
         features = self.cnn(images)
-        
+
         # Project features to the specified embedding size
         features = self.projection(features)
         
