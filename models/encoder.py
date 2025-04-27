@@ -81,6 +81,7 @@ class EncoderCNN(nn.Module):
                 self.cnn.fc = nn.Identity()
 
         # Projection head 
+        # Linear → BatchNorm → ReLU → Dropout
         # (feature dimension -> embed_size)
         self.project = nn.Sequential(
             nn.Linear(in_features, embed_size),
