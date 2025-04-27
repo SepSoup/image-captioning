@@ -79,10 +79,10 @@ def process_captions(dataset_path):
     captions_path = os.path.join(dataset_path, "Flickr8k_text", "Flickr8k.token.txt")
 
     # --------------------------------------------------------------------------------
-    # TODO :
+    # TO DO :
     # This reads each line, separates the image name from the caption, removes the #0, #1, and builds a list of dicts for a DataFrame.
     
-      with open(captions_path, 'r') as file:
+    with open(captions_path, 'r') as file:
         for line in file:
           line = line.strip()
           if not line:
@@ -150,10 +150,12 @@ def create_splits(dataset_path):
     processed_dir = os.path.join(dataset_path, "processed")
     flickr_text_dir = os.path.join(dataset_path, "Flickr8k_text")
 
-    # TODO
+    # TO DO
     # --------------------------------------------------------------------------------
+    train_file = os.path.join(flickr_text_dir, "Flickr_8k.trainImages.txt")
     val_file = os.path.join(flickr_text_dir, "Flickr_8k.devImages.txt")
     test_file = os.path.join(flickr_text_dir, "Flickr_8k.testImages.txt")
+    
     
     with open(train_file, 'r') as f:
         train_images = set(f.read().strip().split('\n'))
@@ -161,6 +163,8 @@ def create_splits(dataset_path):
         val_images = set(f.read().strip().split('\n'))
     with open(test_file, 'r') as f:
         test_images = set(f.read().strip().split('\n'))
+
+    captions_df = pd.read_csv(os.path.join(processed_dir, "captions.csv"))
 
     # Filter captions
     train_df = captions_df[captions_df['image'].isin(train_images)]
