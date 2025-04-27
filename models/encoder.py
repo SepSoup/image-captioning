@@ -118,6 +118,12 @@ class EncoderCNN(nn.Module):
         # Extract features from CNN
         features = self.cnn(images)
 
+        for name , param in self.cnn.named_parameters():
+          if "fc.weight" in name or 'fc.bias' in name :
+            param.requires_grad = True
+          else :
+            param.requires_grad = False
+
         # Project features to the specified embedding size
         features = self.projection(features)
         
