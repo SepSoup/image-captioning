@@ -21,7 +21,7 @@ class CaptionModel(nn.Module):
              hidden_size=512, 
              vocab_size=10000, 
              num_layers=1,
-             encoder_model='resnet18',
+             encoder_model='inception_v3',
              decoder_type='lstm',
              dropout=0.5,
              train_encoder=False):
@@ -38,11 +38,16 @@ class CaptionModel(nn.Module):
             dropout (float): Dropout probability
             train_encoder (bool): Whether to fine-tune the encoder
         """
+        #------------------------------------------------------------------------------------------------
         super(CaptionModel, self).__init__()
         
-        # TODO: Initialize the encoder and decoder components
-        # 1. Create an EncoderCNN instance with the specified parameters
-        # 2. Create a DecoderRNN instance with the specified parameters
+        self.encoderCNN = EncoderCNN()
+        self.decoderRNN = DecoderRNN(embed_size,hidden_size,vocab_size, num_layers)
+
+        # TO DO: Initialize the encoder and decoder components
+        # 1. Create an EncoderCNN instance with the specified parameters ✅
+        # 2. Create a DecoderRNN instance with the specified parameters  ✅
+        #------------------------------------------------------------------------------------------------
         
     def forward(self, images, captions, hidden=None):
         """
@@ -58,32 +63,42 @@ class CaptionModel(nn.Module):
                         Shape: [batch_size, seq_length, vocab_size]
             tuple or torch.Tensor: Final hidden state of the RNN
         """
-        outputs = ...
-        # TODO: Implement the forward pass of the full model
-        # 1. Extract features from images using the encoder
-        # 2. Use the decoder to generate captions based on the features and ground truth captions
-        # 3. Return the outputs and final hidden state
+        #------------------------------------------------------------------------------------------------
+        features = self.encoderCNN(images)  # Extract image features [batch_size, embed_size]
+        outputs, hidden = self.decoderRNN(features, captions, hidden)  # Pass features + captions to decoder
+        return outputs, hidden
+        # TO DO: Implement the forward pass of the full model
+        # 1. Extract features from images using the encoder                                       ✅
+        # 2. Use the decoder to generate captions based on the features and ground truth captions ✅
+        # 3. Return the outputs and final hidden state                                            ✅
+        #------------------------------------------------------------------------------------------------
         
         return outputs, hidden
     
     def generate_caption(self, image, max_length=20, start_token=1, end_token=2, beam_size=1):
         """
         Generate a caption for a single image.
-        
-        Args:
-            image (torch.Tensor): Input image [1, 3, height, width]
-            max_length (int): Maximum caption length
-            start_token (int): Index of the start token
-            end_token (int): Index of the end token
-            beam_size (int): Beam size for beam search (1 = greedy search)
-            
-        Returns:
-            torch.Tensor: Generated caption token sequence [1, seq_length]
         """
-        sampled_ids = list()
+        device = image.device
+        #------------------------------------------------------------------------------------------------
         # TODO: Implement caption generation for inference
-        # 1. Extract features from the image using the encoder (with torch.no_grad())
-        # 2. Use the decoder to generate a caption based on the features
-        # 3. Return the generated caption
-        
-        return sampled_ids[0]  # Return first (and only) sequence in the batch
+        # 1. Extract features from the image using the encoder (with torch.no_grad()) ✅
+        # 2. Use the decoder to generate a caption based on the features              ✅
+        # 3. Return the generated caption                                             ✅
+    
+        # 1.
+        with torch.no_grad():
+            features = self.encoderCNN(image)  # [1, embed_size]
+    
+        # 2.
+        sampled_ids = self.decoderRNN.sample(
+            features,
+            max_length=max_length,
+            start_token=start_token,
+            end_token=end_token,
+            beam_size=beam_size
+        )
+    
+        # 3.
+        return sampled_ids[0]
+        #------------------------------------------------------------------------------------------------
