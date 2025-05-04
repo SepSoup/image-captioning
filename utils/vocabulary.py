@@ -100,14 +100,41 @@ class Vocabulary:
         Returns:
             self: The vocabulary object
         """
+        #-------------------------------------------------------------------------------------------
         # TODO: Build vocabulary from captions
-        # 1. Initialize a Counter to count word frequencies across all captions
-        # 2. Tokenize each caption and update the counter with tokens
-        # 3. Sort words by frequency (most frequent first)
-        # 4. Filter words based on frequency threshold and max_size
-        # 5. Add each filtered word to the vocabulary (word2idx and idx2word)
-        
+        # 1. Initialize a Counter to count word frequencies across all captions ✅
+        # 2. Tokenize each caption and update the counter with tokens           ✅
+        # 3. Sort words by frequency (most frequent first)                      ✅
+        # 4. Filter words based on frequency threshold and max_size             ✅
+        # 5. Add each filtered word to the vocabulary (word2idx and idx2word)   ✅
+
+        word_freq = Counter()
+
+        # 1–2: 
+        for caption in caption_series:
+            tokens = self.tokenize(caption)
+            word_freq.update(tokens)
+
+        # 3:
+        sorted_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
+
+        # 4:
+        filtered_words = [
+            word for word, freq in sorted_words
+            if freq >= self.freq_threshold
+        ]
+
+        if self.max_size:
+            filtered_words = filtered_words[:self.max_size]
+
+        # 5:
+        for word in filtered_words:
+            self.word2idx[word] = self.idx
+            self.idx2word[self.idx] = word
+            self.idx += 1
+
         return self
+        #-------------------------------------------------------------------------------------------
     
     def numericalize(self, text, add_special_tokens=True):
         """
@@ -121,13 +148,29 @@ class Vocabulary:
             list: List of token indices
         """
         indices = list()
-        # TODO: Convert a text string to a sequence of token indices
-        # 1. Tokenize the input text
-        # 2. Convert each token to its corresponding index (use UNK token for unknown words)
-        # 3. Add start and end tokens if requested
-        # 4. Return the list of indices
-        
+        #-------------------------------------------------------------------------------------------
+        # TODO: Convert a text string to a sequence of token indices               
+        # 1. Tokenize the input text                                                        ✅
+        # 2. Convert each token to its corresponding index (use UNK token for unknown words)✅
+        # 3. Add start and end tokens if requested                                          ✅
+        # 4. Return the list of indices                                                     ✅
+
+        # 1.
+        tokens = self.tokenize(text)
+
+        # 2.
+        indices = [
+            self.word2idx.get(token, self.word2idx[self.unk_token]) 
+            for token in tokens
+        ]
+
+        # 3.
+        if add_special_tokens:
+            indices = [self.word2idx[self.start_token]] + indices + [self.word2idx[self.end_token]]
+
+        # 4.
         return indices
+        #-------------------------------------------------------------------------------------------
         
     def decode(self, indices, join=True, remove_special=True):
         """
