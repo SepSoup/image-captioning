@@ -213,16 +213,6 @@ Main dependencies include:
 - h5py
 - tqdm
 
-See `requirements.txt` for the complete list.
-
-## Optional Extensions
-
-After completing the required TODOs, you can extend your project with:
-1. **Attention Mechanism**: Implement visual attention to focus on relevant image regions
-2. **Transformer Architecture**: Replace the RNN decoder with a Transformer
-3. **Larger Datasets**: Use MS COCO or Flickr30k for more training data
-4. **Different Metrics**: Implement CIDEr or METEOR for evaluation
-5. **Fine-tuning**: Enable fine-tuning of the CNN encoder during training
 
 ## Acknowledgments
 
