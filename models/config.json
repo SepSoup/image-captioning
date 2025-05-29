@@ -1,0 +1,17 @@
+{
+    "data_dir": "/content/drive/MyDrive/image-captioning-main/data/flickr8k",
+    "batch_size": 64,
+    "num_workers": 4,
+    "encoder_model": "resnet18",
+    "embed_size": 256,
+    "hidden_size": 512,
+    "num_layers": 1,
+    "dropout": 0.5,
+    "decoder_type": "lstm",
+    "vocab_size": 2986,
+    "learning_rate": 0.001,
+    "num_epochs": 15,
+    "early_stopping_patience": 5,
+    "save_dir": "/content/drive/MyDrive/image-captioning-main/models",
+    "device": "cuda"
+}

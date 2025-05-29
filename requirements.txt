@@ -1,0 +1,25 @@
+# Base requirements
+torch>=1.7.0
+torchvision>=0.8.0
+numpy>=1.19.0
+pandas>=1.1.0
+matplotlib>=3.3.0
+seaborn>=0.11.0
+Pillow>=8.0.0
+tqdm>=4.50.0
+scikit-learn>=0.23.0
+nltk>=3.5
+h5py>=3.1.0
+
+# For interactive demo
+ipywidgets>=7.6.0
+
+# For processing and evaluation
+pycocotools>=2.0.2
+
+# For notebook execution
+jupyter>=1.0.0
+notebook>=6.1.0
+
+# For data downloading and processing
+requests>=2.25.0
